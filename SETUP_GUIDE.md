@@ -152,3 +152,53 @@ Once the GitHub Action finishes running (check the "Actions" tab on GitHub):
 2. Click **Pages**.
 3. Under **Build and deployment**, select **Deploy from a branch**.
 4. Set the branch to **`gh-pages`** and click Save!
+
+---
+
+## 🧠 How It Works: The Magic Behind the Markdown
+
+It can seem like magic how a folder full of Markdown files turns into a fully functioning, styled Next.js website. Here is a breakdown of exactly how the mapping works, using the **Intro** lesson as an example.
+
+### 1. The Raw Material (The Markdown File)
+If you look inside your repository, you'll see a folder structure like this:
+`lessons/01-welcome/A-intro.md`
+
+This is just a standard Markdown file containing the text, code snippets, and headers for the "Intro" lesson.
+
+There is also a `meta.json` file inside `lessons/01-welcome/` that dictates the display names:
+```json
+{
+  "title": "Welcome",
+  "icon": "info-circle",
+  "intro": "Intro",
+  "my-setup": "My Setup"
+}
+```
+This tells the site that the `A-intro.md` file should be displayed as "Intro" in the sidebar, under the "Welcome" section.
+
+### 2. The Engine (`data/lesson.js`)
+When GitHub Actions runs `npm run build`, Next.js starts up. It relies on a helper script located at **`data/lesson.js`** to process your Markdown files.
+
+Here is what `data/lesson.js` does:
+1. It looks at the `lessons/` directory.
+2. It strips out the numbers and letters used for ordering (e.g., `01-welcome` becomes `welcome`, and `A-intro.md` becomes `intro`).
+3. It opens `A-intro.md` and uses **`gray-matter`** to read any metadata at the top of the file (like SEO descriptions).
+4. It runs the Markdown text through **`marked`**, converting it (`# Heading`) into standard HTML (`<h1>Heading</h1>`).
+5. It processes code blocks through **`highlight.js`** to add syntax highlighting.
+
+### 3. The Factory Assembly Line (`pages/lessons/[section]/[slug].js`)
+In Next.js, files inside the `pages/` directory define URL routes. 
+
+The file **`pages/lessons/[section]/[slug].js`** uses brackets `[]` to tell Next.js: *"This is a dynamic template. We will generate many pages from this one file."*
+
+During the build process, this file calls `data/lesson.js`, gets a list of every lesson, and tells Next.js to build a page for each one (e.g., where `[section]` is `welcome` and `[slug]` is `intro`).
+
+Next.js takes the converted HTML of your `A-intro.md` file, wraps it inside the React layout components (Header, Sidebar, Footer), and prepares to save it.
+
+### 4. The Final Static Output
+When `npm run build` finishes, it creates an `/out/` folder. Next.js has generated a hardcoded, static HTML file at:
+**`/out/lessons/welcome/intro.html`**
+
+When the GitHub Action finishes, it takes everything inside the `/out/` folder and pushes it to the `gh-pages` branch. 
+
+So, when a user visits `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/lessons/welcome/intro`, GitHub Pages simply serves that pre-built static `intro.html` file!
