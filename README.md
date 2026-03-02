@@ -1,25 +1,22 @@
-<p align="center"><a href="fem"><img alt="react logo" title="React" src="./public/images/course-icon.png" /></a></p>
+# My Learning Notes
 
-[![Frontend Masters](https://static.frontendmasters.com/assets/brand/logos/full.png)][fem]
+This repository contains my personal learning notes, code snippets, and tutorials. 
 
-[Please click here][course] to head to the course website.
+It is powered by Next.js and GitHub Pages, automatically generating a beautiful documentation site from simple Markdown files.
 
-# Issues and Pull Requests
+## Adding Content
 
-Please file issues and open pull requests here! Thank you! For issues with project files, either file issues on _this_ repo _or_ open a pull request on the projects repos. This repo itself is the course website.
+All notes live in the `lessons/` directory.
 
-# Project Files
+To add a new section, create a folder like `lessons/01-my-topic/`.
+Inside that folder:
+1. Create a `meta.json` to define the order and icons.
+2. Add your `.md` files for each specific note or lesson.
 
-[Please go here][project] for the project files.
+Push the changes to GitHub, and the site will automatically rebuild and deploy!
 
-# License
+## Customization
 
-The content of this workshop is licensed under CC-BY-NC-4.0. Feel free to share freely but do not resell my content.
-
-The code, including the code of the site itself and the code in the exercises, are licensed under Apache 2.0.
-
-[fem]: https://frontendmasters.com/workshops/complete-react-v9/
-[course]: https://react-v9.holt.courses
-[project]: https://github.com/btholt/citr-v9-project/
-
-[React icons created by Pixel perfect - Flaticon](https://www.flaticon.com/free-icons/react)
+To personalize the site:
+- Update `course.json` with your details.
+- Replace the images in `public/images/`.
